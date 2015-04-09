@@ -1,0 +1,5 @@
+const char thingSpeakAddress[] = "api.thingspeak.com";
+const String THINGSPEAK_LIGHT_FEED_API_KEY = "XSKIKUK9IRAK83TJ";
+const String THINGSPEAK_LED_FEED_API_KEY = "0NMDW8GHXOTA1UPB";
+const String THINGSPEAK_LED_TALKBACK_API_KEY = "L0F9D6U2ID8D5T0I";
+const String THINGSPEAK_LED_TALKBACK_ID = "1905";
