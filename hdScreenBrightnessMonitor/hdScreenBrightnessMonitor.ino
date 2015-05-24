@@ -5,7 +5,7 @@
 
 byte mac[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }; // Must be unique on local network
 const int second = 1000; // 1 second = 1000 millis
-const int updateThingSpeakInterval = 15 * second;      // Time interval in milliseconds to update ThingSpeak (number of seconds * 1000 = interval)
+const int updateThingSpeakInterval = 1 * second; // Time interval in milliseconds to update ThingSpeak (number of seconds * 1000 = interval)
 unsigned long lastConnectionTime = 0;
 
 byte networkFailedCounter = 0;
@@ -90,12 +90,13 @@ String readHttpResponseWithoutHeaders(EthernetClient &client)
 String getNextTalkBackCommand(String apiKey, String talkbackId)
 {
 	EthernetClient client;
-	if (client.connect(thingSpeakAddress, 80))
+	if (client.connect(thingSpeakAddressTalk, thingSpeakAddressPortTalk))
 	{
 		networkFailedCounter = 0;
 
 		client.println("POST /talkbacks/" + talkbackId + "/commands/execute HTTP/1.1");
-		client.println("Host: api.thingspeak.com");
+		String host = "Host: "; host += thingSpeakAddressTalk;
+		client.println(host);
 		client.println("Connection: close");
 		client.println("Content-Type: application/x-www-form-urlencoded");
 		String post = "api_key=" + apiKey;
@@ -160,12 +161,13 @@ void loop()
 void updateThingSpeakFeed(String apiKey, String tsData)
 {
 	EthernetClient client;
-	if (client.connect(thingSpeakAddress, 80))
+	if (client.connect(thingSpeakAddressFeed, thingSpeakAddressPortFeed))
 	{
 		networkFailedCounter = 0;
 
 		client.println("POST /update HTTP/1.1");
-		client.println("Host: api.thingspeak.com");
+		String host = "Host: "; host += thingSpeakAddressFeed;
+		client.println(host);
 		client.println("Connection: close");
 		client.println("X-THINGSPEAKAPIKEY: " + apiKey);
 		client.println("Content-Type: application/x-www-form-urlencoded");
